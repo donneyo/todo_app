@@ -1,23 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongose';
+import { connectToDatabase } from '@/lib/mongoose';
 import { Task } from '@/models/todo';
 
-interface Params {
-    params: { id: string }
-}
-
-export async function PATCH(req: NextRequest, { params }: Params) {
-    const { id } = params;
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectToDatabase();
-        const updates = await req.json();
+        const { id } = params;
+        const { title, subtitle, status } = await req.json();
 
-        const updatedTask = await Task.findByIdAndUpdate(id, updates, { new: true });
-
-        if (!updatedTask) {
-            return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-        }
-
+        const updatedTask = await Task.findByIdAndUpdate(id, { title, subtitle, status }, { new: true });
         return NextResponse.json(updatedTask);
     } catch (err) {
         console.error(err);
@@ -25,18 +16,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     }
 }
 
-export async function DELETE(req: NextRequest, { params }: Params) {
-    const { id } = params;
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectToDatabase();
+        const { id } = params;
 
-        const deletedTask = await Task.findByIdAndDelete(id);
-
-        if (!deletedTask) {
-            return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-        }
-
-        return NextResponse.json({ message: 'Task deleted' });
+        await Task.findByIdAndDelete(id);
+        return NextResponse.json({ message: 'Task deleted successfully' });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: 'Failed to delete task' }, { status: 500 });

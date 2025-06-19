@@ -155,12 +155,3 @@ export default function Sidebar() {
 }
 
 
-
-function SidebarItem({ icon, label }: { icon: React.ReactNode; label: string }) {
-    return (
-        <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#1C1C1C] transition">
-            {icon}
-            <span>{label}</span>
-        </button>
-    );
-}

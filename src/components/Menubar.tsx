@@ -57,7 +57,7 @@
 
 'use client';
 
-import { LayoutGrid, SlidersHorizontal, SortAsc, MoreHorizontal } from 'lucide-react';
+import { LayoutGrid} from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 interface MenuBarProps {

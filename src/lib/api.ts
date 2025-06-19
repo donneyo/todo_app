@@ -49,7 +49,7 @@
 //     return res.json();
 // }
 
-import { dbConnect } from '@/lib/mongose';
+import { dbConnect } from '@/lib/mongoose';
 import { Task } from '@/models/todo';
 
 export async function getAllTasks() {
