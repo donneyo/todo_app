@@ -13,7 +13,6 @@
 import { useState, useEffect } from 'react';
 import MenuBar from '@/components/Menubar';
 import TaskBoard from '@/components/TaskBoard';
-import { getAllTasks } from '@/lib/api';
 import { TaskType } from '@/types/task';
 
 export default function HomePage() {
@@ -23,8 +22,9 @@ export default function HomePage() {
 
     const refreshTasks = async () => {
         try {
-            const allTasks = await getAllTasks();
-            setTasks(allTasks);
+            const response = await fetch('/api/tasks');  // <-- fetch your API
+            const data = await response.json();
+            setTasks(data);
         } catch (err) {
             console.error(err);
         }
@@ -54,3 +54,4 @@ export default function HomePage() {
         </section>
     );
 }
+

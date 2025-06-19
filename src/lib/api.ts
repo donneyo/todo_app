@@ -49,40 +49,83 @@
 //     return res.json();
 // }
 
-import { dbConnect } from '@/lib/mongoose';
+// import { connectToDatabase  } from '@/lib/mongoose';
+// import { Task } from '@/models/todo';
+//
+// export async function getAllTasks() {
+//     await connectToDatabase();
+//     return await Task.find().sort({ createdAt: -1 });
+// }
+//
+// export async function createTask(data: {
+//     title: string;
+//     subtitle?: string;
+// }) {
+//     await connectToDatabase();
+//     const task = new Task({
+//         title: data.title,
+//         subtitle: data.subtitle || '',
+//     });
+//     return await task.save();
+// }
+//
+// export async function updateTask(taskId: string, updates: {
+//     title?: string;
+//     subtitle?: string;
+// }) {
+//     await connectToDatabase();
+//     return await Task.findByIdAndUpdate(taskId, updates, { new: true });
+// }
+//
+// export async function updateTaskStatus(taskId: string, status: 'todo' | 'in-progress' | 'done') {
+//     await connectToDatabase();
+//     return await Task.findByIdAndUpdate(taskId, { status }, { new: true });
+// }
+//
+// export async function deleteTask(taskId: string) {
+//     await connectToDatabase();
+//     return await Task.findByIdAndDelete(taskId);
+// }
+//
+// import { connectToDatabase } from '@/lib/mongoose';
+// import { Task } from '@/models/todo';
+//
+// export async function getAllTasks() {
+//     await connectToDatabase();
+//     return await Task.find().sort({ createdAt: -1 });
+// }
+//
+// export async function createTask(data: any) {
+//     await connectToDatabase();
+//     const task = new Task(data);
+//     await task.save();
+//     return task;
+// }
+//
+// export async function deleteTask(id: string) {
+//     await connectToDatabase();
+//     await Task.findByIdAndDelete(id);
+// }
+
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDatabase } from '@/lib/mongoose';
 import { Task } from '@/models/todo';
 
-export async function getAllTasks() {
-    await dbConnect();
-    return await Task.find().sort({ createdAt: -1 });
+export async function GET() {
+    await connectToDatabase();
+    const tasks = await Task.find();
+    return NextResponse.json(tasks);
 }
 
-export async function createTask(data: {
-    title: string;
-    subtitle?: string;
-}) {
-    await dbConnect();
-    const task = new Task({
-        title: data.title,
-        subtitle: data.subtitle || '',
-    });
-    return await task.save();
-}
-
-export async function updateTask(taskId: string, updates: {
-    title?: string;
-    subtitle?: string;
-}) {
-    await dbConnect();
-    return await Task.findByIdAndUpdate(taskId, updates, { new: true });
-}
-
-export async function updateTaskStatus(taskId: string, status: 'todo' | 'in-progress' | 'done') {
-    await dbConnect();
-    return await Task.findByIdAndUpdate(taskId, { status }, { new: true });
-}
-
-export async function deleteTask(taskId: string) {
-    await dbConnect();
-    return await Task.findByIdAndDelete(taskId);
+export async function POST(req: NextRequest) {
+    try {
+        await connectToDatabase();
+        const body = await req.json();
+        const task = new Task(body);
+        await task.save();
+        return NextResponse.json(task);
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
+    }
 }
