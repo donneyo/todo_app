@@ -150,9 +150,9 @@ export default function TaskBoard({ tasks, refreshTasks }: TaskBoardProps) {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <TaskColumn title="To Do" tasks={todoTasks} refreshTasks={refreshTasks} status="todo" />
-            <TaskColumn title="In Progress" tasks={inProgressTasks} refreshTasks={refreshTasks} status="in-progress" />
-            <TaskColumn title="Done" tasks={doneTasks} refreshTasks={refreshTasks} status="done" />
+            <TaskColumn title="To Do" tasks={todoTasks} refreshTasks={refreshTasks} status="todo"/>
+            <TaskColumn title="In Progress" tasks={inProgressTasks} refreshTasks={refreshTasks} status="in-progress"/>
+            <TaskColumn title="Done" tasks={doneTasks} refreshTasks={refreshTasks} status="done"/>
         </div>
     );
 }

@@ -17,23 +17,23 @@ export default function TaskColumn({ title, tasks, refreshTasks, status }: TaskC
         if (!newTaskTitle.trim()) return;
         await fetch('/api/tasks', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: newTaskTitle, status })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({title: newTaskTitle, status})
         });
         setNewTaskTitle('');
         refreshTasks();
     };
 
     const handleDelete = async (id: string) => {
-        await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+        await fetch(`/api/tasks/${id}`, {method: 'DELETE'});
         refreshTasks();
     };
 
     const handleUpdateStatus = async (id: string, newStatus: 'todo' | 'in-progress' | 'done') => {
         await fetch(`/api/tasks/${id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({status: newStatus})
         });
         refreshTasks();
     };
@@ -48,7 +48,8 @@ export default function TaskColumn({ title, tasks, refreshTasks, status }: TaskC
                         <span>{task.title}</span>
                         <div className="flex gap-2">
                             {status !== 'done' && (
-                                <button onClick={() => handleUpdateStatus(task._id, 'done')} className="text-green-400">✔</button>
+                                <button onClick={() => handleUpdateStatus(task._id, 'done')}
+                                        className="text-green-400">✔</button>
                             )}
                             <button onClick={() => handleDelete(task._id)} className="text-red-400">🗑</button>
                         </div>
