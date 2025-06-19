@@ -1,18 +1,19 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongoose';
 import { Task } from '@/models/todo';
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
-    const body = await request.json();
-    await connectToDatabase();
-    const updatedTask = await Task.findByIdAndUpdate(id, body, { new: true });
-    return Response.json(updatedTask);
-}
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+    try {
+        await connectToDatabase();
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
-    await connectToDatabase();
-    await Task.findByIdAndDelete(id);
-    return Response.json({ message: 'Deleted successfully' });
+        const task = await Task.findByIdAndDelete(params.id);
+        if (!task) {
+            return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: 'Task deleted successfully' });
+    } catch (err) {
+        console.error('Delete failed:', err);
+        return NextResponse.json({ error: 'Failed to delete task' }, { status: 500 });
+    }
 }
