@@ -9,7 +9,7 @@ export async function connectToDatabase() {
 
     try {
         await mongoose.connect(process.env.MONGODB_URI!, {
-            dbName: 'todo_app', // <-- replace with your DB name
+            dbName: 'todo_app',
         });
         isConnected = true;
         console.log('MongoDB Connected');
