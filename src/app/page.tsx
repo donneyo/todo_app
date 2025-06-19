@@ -7,7 +7,6 @@
 //         </section>
 //     );
 // }
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -22,9 +21,9 @@ export default function HomePage() {
 
     const refreshTasks = async () => {
         try {
-            const response = await fetch('/api/tasks');  // <-- fetch your API
-            const data = await response.json();
-            setTasks(data);
+            const res = await fetch('/api/tasks');
+            const allTasks = await res.json();
+            setTasks(allTasks);
         } catch (err) {
             console.error(err);
         }
@@ -54,4 +53,3 @@ export default function HomePage() {
         </section>
     );
 }
-

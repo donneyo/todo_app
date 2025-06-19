@@ -134,7 +134,6 @@
 //     );
 // }
 
-'use client';
 
 import TaskColumn from './TaskColumn';
 import { TaskType } from '@/types/task';
@@ -145,15 +144,15 @@ interface TaskBoardProps {
 }
 
 export default function TaskBoard({ tasks, refreshTasks }: TaskBoardProps) {
-    const todo = tasks.filter(task => task.status === 'todo');
-    const inProgress = tasks.filter(task => task.status === 'in-progress');
-    const done = tasks.filter(task => task.status === 'done');
+    const todoTasks = tasks.filter(task => task.status === 'todo');
+    const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
+    const doneTasks = tasks.filter(task => task.status === 'done');
 
     return (
-        <div className="grid gap-6 md:grid-cols-3 w-full">
-            <TaskColumn title="To Do" count={todo.length} color="bg-purple-500" tasks={todo} refreshTasks={refreshTasks} />
-            <TaskColumn title="In Progress" count={inProgress.length} color="bg-yellow-400" tasks={inProgress} refreshTasks={refreshTasks} />
-            <TaskColumn title="Done" count={done.length} color="bg-green-500" tasks={done} refreshTasks={refreshTasks} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <TaskColumn title="To Do" tasks={todoTasks} refreshTasks={refreshTasks} status="todo" />
+            <TaskColumn title="In Progress" tasks={inProgressTasks} refreshTasks={refreshTasks} status="in-progress" />
+            <TaskColumn title="Done" tasks={doneTasks} refreshTasks={refreshTasks} status="done" />
         </div>
     );
 }

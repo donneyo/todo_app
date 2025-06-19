@@ -27,7 +27,6 @@
 //         return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
 //     }
 // }
-
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongoose';
 import { Task } from '@/models/todo';
@@ -39,14 +38,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-    try {
-        await connectToDatabase();
-        const body = await req.json();
-        const task = new Task(body);
-        await task.save();
-        return NextResponse.json(task);
-    } catch (err) {
-        console.error(err);
-        return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
-    }
+    await connectToDatabase();
+    const body = await req.json();
+    const task = new Task(body);
+    await task.save();
+    return NextResponse.json(task);
 }
