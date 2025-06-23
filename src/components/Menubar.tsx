@@ -57,7 +57,7 @@
 
 'use client';
 
-import { LayoutGrid} from 'lucide-react';
+import { LayoutGrid, Plus, MoreHorizontal } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 interface MenuBarProps {
@@ -66,7 +66,7 @@ interface MenuBarProps {
     currentFilter: 'all' | 'todo' | 'in-progress' | 'done';
 }
 
-export default function MenuBar({ onSearch, onFilter, currentFilter }: MenuBarProps) {
+export default function MenuBar({  }: MenuBarProps) {
     const { theme } = useTheme();
 
     return (
@@ -78,34 +78,33 @@ export default function MenuBar({ onSearch, onFilter, currentFilter }: MenuBarPr
                     <LayoutGrid size={16} />
                     <span>Board View</span>
                 </button>
-
-                <input
-                    type="text"
-                    placeholder="Search tasks..."
-                    onChange={(e) => onSearch(e.target.value)}
-                    className={`ml-4 px-3 py-1.5 rounded-md border 
-                        ${theme === 'light'
-                        ? 'bg-white border-[#CCCCCC] text-black'
-                        : 'bg-[#2A2A2E] border-[#3A3A3D] text-white'}`}
-                />
+                <button className="flex items-center gap-1 px-3 py-1.5 rounded-md hover:bg-[#2A2A2E] transition">
+                    <Plus size={16} />
+                    <span>Add View</span>
+                </button>
             </div>
 
-            <div className="flex items-center gap-3 text-sm">
-                <select
-                    value={currentFilter}
-                    onChange={(e) => onFilter(e.target.value as any)}
-                    className={`px-3 py-1.5 rounded-md border 
-                        ${theme === 'light'
-                        ? 'bg-white border-[#CCCCCC] text-black'
-                        : 'bg-[#2A2A2E] border-[#3A3A3D] text-white'}`}
-                >
-                    <option value="all">All</option>
-                    <option value="todo">Todo</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="done">Done</option>
-                </select>
+            <div className="flex items-center gap-4 text-sm">
+                {/* Filter */}
+                <button className={`px-3 py-1.5 rounded-md hover:bg-[#2A2A2E] transition`}>
+                    <span className={`${theme === 'light' ? 'text-[#333333]' : 'text-gray-300'}`}>Filter</span>
 
-                <button className={`px-4 py-1.5 rounded-md font-semibold 
+                </button>
+
+
+                {/* Sort */}
+                <div className="flex items-center gap-1">
+                    <span className={`${theme === 'light' ? 'text-[#333333]' : 'text-gray-300'}`}>Sort</span>
+                </div>
+                <div className="flex items-center gap-1">
+
+                    <div className={`w-8 h-8 flex items-center justify-center rounded-full cursor-pointer 
+                        ${theme === 'light' ? 'bg-[#F0F0F0] text-[#333333]' : 'bg-[#3A3A3D] text-white'}`}>
+                        <MoreHorizontal size={18} />
+                    </div>
+                </div>
+
+                <button className={`px-4 py-1.5 rounded-full font-semibold 
                     ${theme === 'light' ? 'bg-black text-white hover:bg-[#333333]' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
                     New Template
                 </button>

@@ -1,46 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import MenuBar from '@/components/Menubar';
+import { ThemeProvider } from '@/context/ThemeContext';
+
 import TaskBoard from '@/components/TaskBoard';
 import { TaskType } from '@/types/task';
 
 export default function HomePage() {
-    const [tasks, setTasks] = useState<TaskType[]>([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterStatus, setFilterStatus] = useState<'all' | 'todo' | 'in-progress' | 'done'>('all');
-
-    const refreshTasks = async () => {
-        try {
-            const res = await fetch('/api/tasks');
-            const allTasks = await res.json();
-            setTasks(allTasks);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    useEffect(() => {
-        refreshTasks();
-    }, []);
-
-    const filteredTasks = tasks.filter(task => {
-        const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (task.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()));
-        const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
-        return matchesSearch && matchesStatus;
-    });
+    const dummyTasks: TaskType[] = [
+        { _id: '1', title: 'Design Landing Page', subtitle: 'Update Figma draft', status: 'todo', progress: { completed: 3, total: 5 }, createdAt: '2025-06-19T12:00:00Z' },
+        { _id: '2', title: 'Fix API Bugs', subtitle: 'Resolve POST errors', status: 'in-progress', progress: { completed: 1, total: 4 }, createdAt: '2025-06-18T09:30:00Z' },
+        { _id: '3', title: 'Deploy to Production', subtitle: 'Push to Vercel', status: 'done', progress: { completed: 4, total: 4 }, createdAt: '2025-06-17T15:00:00Z' }
+    ];
 
     return (
-        <section>
-            <MenuBar
-                onSearch={setSearchQuery}
-                onFilter={setFilterStatus}
-                currentFilter={filterStatus}
-            />
-            <div className="p-6">
-                <TaskBoard tasks={filteredTasks} refreshTasks={refreshTasks} />
+        <ThemeProvider>
+            <div className="min-h-screen">
+                <TaskBoard tasks={dummyTasks} />
             </div>
-        </section>
+        </ThemeProvider>
     );
 }
+

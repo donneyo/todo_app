@@ -1,71 +1,76 @@
 'use client';
 
 import { useState } from 'react';
+import TaskCard from './TaskCard';
 import { TaskType } from '@/types/task';
+import { Plus, X } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 interface TaskColumnProps {
     title: string;
+    color: string;
     tasks: TaskType[];
-    refreshTasks: () => void;
-    status: 'todo' | 'in-progress' | 'done';
+    onAddTask: (title: string, subtitle: string) => void;
+    onDelete: (taskId: string) => void;
+    onNext: (taskId: string) => void;
+    onEdit: (taskId: string, updatedTitle: string, updatedSubtitle: string) => void;
 }
 
-export default function TaskColumn({ title, tasks, refreshTasks, status }: TaskColumnProps) {
-    const [newTaskTitle, setNewTaskTitle] = useState('');
+export default function TaskColumn({ title, color, tasks, onAddTask, onDelete, onNext, onEdit }: TaskColumnProps) {
+    const { theme } = useTheme();
+    const [showForm, setShowForm] = useState(false);
+    const [titleInput, setTitleInput] = useState('');
+    const [subtitleInput, setSubtitleInput] = useState('');
 
-    const handleCreate = async () => {
-        if (!newTaskTitle.trim()) return;
-        await fetch('/api/tasks', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({title: newTaskTitle, status})
-        });
-        setNewTaskTitle('');
-        refreshTasks();
-    };
-
-    const handleDelete = async (id: string) => {
-        await fetch(`/api/tasks/${id}`, {method: 'DELETE'});
-        refreshTasks();
-    };
-
-    const handleUpdateStatus = async (id: string, newStatus: 'todo' | 'in-progress' | 'done') => {
-        await fetch(`/api/tasks/${id}`, {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({status: newStatus})
-        });
-        refreshTasks();
+    const handleSubmit = () => {
+        if (titleInput.trim() === '') return;
+        onAddTask(titleInput, subtitleInput);
+        setTitleInput('');
+        setSubtitleInput('');
+        setShowForm(false);
     };
 
     return (
-        <div className="bg-[#18181B] p-4 rounded-lg">
-            <h3 className="font-bold text-lg mb-4">{title}</h3>
-
-            <div className="space-y-2 mb-4">
-                {tasks.map(task => (
-                    <div key={task._id} className="bg-[#2A2A2E] p-2 rounded flex justify-between items-center">
-                        <span>{task.title}</span>
-                        <div className="flex gap-2">
-                            {status !== 'done' && (
-                                <button onClick={() => handleUpdateStatus(task._id, 'done')}
-                                        className="text-green-400">✔</button>
-                            )}
-                            <button onClick={() => handleDelete(task._id)} className="text-red-400">🗑</button>
-                        </div>
-                    </div>
-                ))}
+        <div className={`${theme === 'light' ? 'bg-[#F5F5F5]' : 'bg-[#2A2A2E]'} rounded-lg p-4 flex flex-col gap-4`}>
+            <div className="flex justify-between items-center mb-2">
+                <h3 className="flex items-center gap-2 text-sm font-medium">
+                    <span className={`${color} w-2.5 h-2.5 rounded-full`}></span> {title}
+                </h3>
+                <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1 text-xs bg-[#4A4A4D] text-white px-2.5 py-1 rounded hover:bg-[#5A5A5D]">
+                    {showForm ? <X size={14} /> : <Plus size={14} />} {showForm ? 'Close' : 'Add New Task'}
+                </button>
             </div>
 
-            <div className="flex gap-2">
-                <input
-                    value={newTaskTitle}
-                    onChange={e => setNewTaskTitle(e.target.value)}
-                    placeholder="New task..."
-                    className="flex-1 px-2 py-1 rounded bg-[#2A2A2E] text-white"
-                />
-                <button onClick={handleCreate} className="bg-blue-500 text-white px-3 rounded">Add</button>
+            {/* New Task Form */}
+            {showForm && (
+                <div className="flex flex-col gap-2">
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        className="p-2 rounded text-black"
+                        value={titleInput}
+                        onChange={(e) => setTitleInput(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Subtitle"
+                        className="p-2 rounded text-black"
+                        value={subtitleInput}
+                        onChange={(e) => setSubtitleInput(e.target.value)}
+                    />
+                    <button onClick={handleSubmit} className="bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
+                        Add Task
+                    </button>
+                </div>
+            )}
+
+            {/* Task Cards */}
+            <div className="flex flex-col gap-3">
+                {tasks.map(task => (
+                    <TaskCard key={task._id} task={task} onDelete={onDelete} onNext={onNext} onEdit={onEdit} />
+                ))}
             </div>
         </div>
     );
 }
+
