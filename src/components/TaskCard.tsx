@@ -19,7 +19,6 @@ export default function TaskCard({ task, onDelete, onNext, onEdit }: TaskCardPro
     const [editedTitle, setEditedTitle] = useState(task.title);
     const [editedSubtitle, setEditedSubtitle] = useState(task.subtitle || '');
 
-    // Simplify progress logic: fixed total 3 steps
     let completed = 0;
     let progressPercentage = 0;
     let progressColor = '';
@@ -64,7 +63,7 @@ export default function TaskCard({ task, onDelete, onNext, onEdit }: TaskCardPro
     };
 
     return (
-        <div className={`${theme === 'light' ? 'bg-white text-black' : 'bg-[#3A3A3D] text-white'} relative rounded-lg p-4 space-y-3 transition`}>
+        <div className={`${theme === 'light' ? 'bg-white text-black' : 'bg-[#3A3A3D] text-white'} relative rounded-lg p-4 space-y-3 transition w-full max-w-full`}>
             <div className="flex justify-between items-start">
                 {editMode ? (
                     <div className="flex flex-col gap-1 w-full">

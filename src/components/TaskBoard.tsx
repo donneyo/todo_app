@@ -5,13 +5,12 @@ import TaskColumn from './TaskColumn';
 import { TaskType } from '@/types/task';
 
 interface TaskBoardProps {
-    tasks: TaskType[];  // <-- NEW
+    tasks: TaskType[];
 }
 
-export default function TaskBoard({ tasks: initialTasks }: TaskBoardProps) {  // <-- receive tasks prop
+export default function TaskBoard({ tasks: initialTasks }: TaskBoardProps) {
     const [tasks, setTasks] = useState<TaskType[]>(initialTasks);
 
-    // Optional: sync state when props change (in case you want refresh feature later)
     useEffect(() => {
         setTasks(initialTasks);
     }, [initialTasks]);
@@ -58,7 +57,7 @@ export default function TaskBoard({ tasks: initialTasks }: TaskBoardProps) {  //
     const doneTasks = tasks.filter(task => task.status === 'done');
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <TaskColumn title="To Do" color="bg-purple-500" tasks={todoTasks} onAddTask={handleAddTask} onDelete={handleDeleteTask} onNext={handleNextTask} onEdit={handleEditTask} />
             <TaskColumn title="In Progress" color="bg-yellow-400" tasks={inProgressTasks} onAddTask={handleAddTask} onDelete={handleDeleteTask} onNext={handleNextTask} onEdit={handleEditTask} />
             <TaskColumn title="Done" color="bg-green-500" tasks={doneTasks} onAddTask={handleAddTask} onDelete={handleDeleteTask} onNext={handleNextTask} onEdit={handleEditTask} />

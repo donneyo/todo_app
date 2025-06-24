@@ -31,7 +31,7 @@ export default function TaskColumn({ title, color, tasks, onAddTask, onDelete, o
     };
 
     return (
-        <div className={`${theme === 'light' ? 'bg-[#F5F5F5]' : 'bg-[#2A2A2E]'} rounded-lg p-4 flex flex-col gap-4`}>
+        <div className={`${theme === 'light' ? 'bg-[#F5F5F5]' : 'bg-[#2A2A2E]'} rounded-lg p-4 flex flex-col gap-4 w-full max-w-full`}>
             <div className="flex justify-between items-center mb-2">
                 <h3 className="flex items-center gap-2 text-sm font-medium">
                     <span className={`${color} w-2.5 h-2.5 rounded-full`}></span> {title}
@@ -41,7 +41,6 @@ export default function TaskColumn({ title, color, tasks, onAddTask, onDelete, o
                 </button>
             </div>
 
-            {/* New Task Form */}
             {showForm && (
                 <div className="flex flex-col gap-2">
                     <input
@@ -64,7 +63,6 @@ export default function TaskColumn({ title, color, tasks, onAddTask, onDelete, o
                 </div>
             )}
 
-            {/* Task Cards */}
             <div className="flex flex-col gap-3">
                 {tasks.map(task => (
                     <TaskCard key={task._id} task={task} onDelete={onDelete} onNext={onNext} onEdit={onEdit} />
@@ -73,4 +71,3 @@ export default function TaskColumn({ title, color, tasks, onAddTask, onDelete, o
         </div>
     );
 }
-
