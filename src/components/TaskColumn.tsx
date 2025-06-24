@@ -7,8 +7,8 @@ import { Plus, X } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 interface TaskColumnProps {
-    title: string;
     color: string;
+    title: string;
     tasks: TaskType[];
     onAddTask: (title: string, subtitle: string) => void;
     onDelete: (taskId: string) => void;

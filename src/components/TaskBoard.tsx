@@ -18,8 +18,8 @@ export default function TaskBoard({ tasks: initialTasks }: TaskBoardProps) {
     const handleAddTask = (title: string, subtitle: string) => {
         const newTask: TaskType = {
             _id: Date.now().toString(),
-            title,
             subtitle,
+            title,
             status: 'todo',
             progress: { completed: 0, total: 0 },
             createdAt: new Date().toISOString(),

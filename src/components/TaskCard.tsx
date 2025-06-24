@@ -6,8 +6,8 @@ import { TaskType } from '@/types/task';
 import { useTheme } from '@/context/ThemeContext';
 
 interface TaskCardProps {
-    task: TaskType;
     onDelete: (taskId: string) => void;
+    task: TaskType;
     onNext: (taskId: string) => void;
     onEdit: (taskId: string, updatedTitle: string, updatedSubtitle: string) => void;
 }
